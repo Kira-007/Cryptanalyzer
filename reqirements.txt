@@ -1,0 +1,8 @@
+Flask==2.3.2
+pycryptodome==3.23.0
+pwntools==4.13.0
+pyfiglet==0.8.post1
+factordb-pycli
+requests==2.31.0
+gmpy2>=2.2.0
+Werkzeug==2.3.6

@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>AES Analyzer</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="/static/css/style.css" rel="stylesheet">
+  <script src="/static/js/utils.js"></script>
+</head>
+<body class="p-6">
+  <a href="/">← Back</a>
+  <h1 class="text-2xl font-bold text-cyan-300 my-4">AES — CPA Oracle</h1>
+
+  <div class="max-w-2xl">
+    <label class="block text-sm text-gray-300 mb-2">Server string (for pwntools/process)</label>
+    <input id="server" class="w-full p-2 rounded bg-gray-900 text-white" placeholder="eg: 127.0.0.1:1337 or ./challenge_binary" />
+    <div class="mt-4">
+      <button id="run" class="px-4 py-2 bg-cyan-500 rounded">Run CPA</button>
+    </div>
+
+    <pre id="out" class="mt-4 p-4 bg-black rounded h-64 overflow-auto text-xs"></pre>
+  </div>
+
+  <script>
+    document.getElementById('run').onclick = async () => {
+      const server = document.getElementById('server').value.trim();
+      if(!server){ alert('Enter server'); return; }
+      document.getElementById('out').textContent = "Running... (this may block if process can't be spawned)\n";
+      try {
+        const resp = await fetch('/api/aes/cpa', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({server})
+        });
+        const json = await resp.json();
+        document.getElementById('out').textContent = JSON.stringify(json, null, 2);
+      } catch (e) {
+        document.getElementById('out').textContent = String(e);
+      }
+    }
+  </script>
+</body>
+</html>

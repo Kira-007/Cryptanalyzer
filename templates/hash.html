@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Hash Attacks</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="/static/css/style.css" rel="stylesheet">
+  <script src="/static/js/utils.js"></script>
+</head>
+<body class="p-6">
+  <a href="/">← Back</a>
+  <h1 class="text-2xl font-bold text-cyan-300 my-4">Hash Attacks</h1>
+
+  <section class="mb-6 max-w-2xl">
+    <h2 class="font-semibold">Dictionary / Brute-force Crack</h2>
+    <label class="block text-sm text-gray-400">Hash</label>
+    <input id="crack_hash" class="w-full p-2 bg-gray-900 rounded" />
+    <label class="block text-sm text-gray-400 mt-2">Algo (eg. sha1, md5)</label>
+    <input id="crack_algo" class="w-full p-2 bg-gray-900 rounded" />
+    <label class="block text-sm text-gray-400 mt-2">Wordlist file</label>
+    <input type="file" id="crack_wordlist" />
+    <div class="mt-3">
+      <button id="crack_run" class="px-3 py-1 bg-cyan-500 rounded">Run Crack</button>
+    </div>
+    <pre id="crack_out" class="mt-2 p-3 bg-black rounded h-40 overflow-auto"></pre>
+  </section>
+
+  <section class="mb-6 max-w-2xl">
+    <h2 class="font-semibold">Rainbow Table Generate</h2>
+    <label class="block text-sm text-gray-400">Algo</label>
+    <input id="rg_algo" class="w-full p-2 bg-gray-900 rounded" />
+    <label class="block text-sm text-gray-400 mt-2">Wordlist</label>
+    <input type="file" id="rg_wordlist" />
+    <label class="block text-sm text-gray-400 mt-2">Output filename</label>
+    <input id="rg_output" value="rainbow.json" class="w-full p-2 bg-gray-900 rounded" />
+    <div class="mt-3"><button id="rg_run" class="px-3 py-1 bg-cyan-500 rounded">Generate</button></div>
+    <pre id="rg_out" class="mt-2 p-3 bg-black rounded h-36 overflow-auto"></pre>
+  </section>
+
+  <section class="mb-6 max-w-2xl">
+    <h2 class="font-semibold">HMAC Brute-force</h2>
+    <label class="block text-sm text-gray-400">HMAC hex</label>
+    <input id="hb_hmac" class="w-full p-2 bg-gray-900 rounded" />
+    <label class="block text-sm text-gray-400 mt-2">Message</label>
+    <input id="hb_msg" class="w-full p-2 bg-gray-900 rounded" />
+    <label class="block text-sm text-gray-400 mt-2">Algo (eg. sha1)</label>
+    <input id="hb_algo" class="w-full p-2 bg-gray-900 rounded" />
+    <label class="block text-sm text-gray-400 mt-2">Wordlist</label>
+    <input type="file" id="hb_wordlist" />
+    <div class="mt-3"><button id="hb_run" class="px-3 py-1 bg-cyan-500 rounded">Run HMAC Brute</button></div>
+    <pre id="hb_out" class="mt-2 p-3 bg-black rounded h-36 overflow-auto"></pre>
+  </section>
+
+  <section class="max-w-2xl">
+    <h2 class="font-semibold">Birthday Attack</h2>
+    <label class="block text-sm text-gray-400">Algo</label>
+    <input id="bd_algo" class="w-full p-2 bg-gray-900 rounded" />
+    <label class="block text-sm text-gray-400 mt-2">Length (default 8)</label>
+    <input id="bd_len" value="8" class="w-full p-2 bg-gray-900 rounded" />
+    <div class="mt-3"><button id="bd_run" class="px-3 py-1 bg-cyan-500 rounded">Run Birthday</button></div>
+    <pre id="bd_out" class="mt-2 p-3 bg-black rounded h-36 overflow-auto"></pre>
+  </section>
+
+<script>
+async function uploadFileAsForm(fileInput, extra = {}) {
+  const form = new FormData();
+  if (fileInput && fileInput.files.length) {
+    form.append(fileInput.name || 'file', fileInput.files[0]);
+  }
+  for (const k in extra) form.append(k, extra[k]);
+  return form;
+}
+
+document.getElementById('crack_run').onclick = async () => {
+  const hash = document.getElementById('crack_hash').value.trim();
+  const algo = document.getElementById('crack_algo').value.trim();
+  const file = document.getElementById('crack_wordlist');
+  if (!hash || !algo || !file.files.length){ alert('Provide hash, algo and wordlist file'); return; }
+  const form = new FormData();
+  form.append('hash', hash); form.append('algo', algo); form.append('wordlist', file.files[0]);
+  document.getElementById('crack_out').textContent = 'Running...';
+  const r = await fetch('/api/hash/crack', { method:'POST', body: form });
+  const j = await r.json();
+  document.getElementById('crack_out').textContent = JSON.stringify(j, null, 2);
+};
+
+document.getElementById('rg_run').onclick = async () => {
+  const algo = document.getElementById('rg_algo').value.trim();
+  const file = document.getElementById('rg_wordlist');
+  const out = document.getElementById('rg_output').value || 'rainbow.json';
+  if (!algo || !file.files.length){ alert('Provide algo and wordlist file'); return; }
+  const form = new FormData(); form.append('algo', algo); form.append('wordlist', file.files[0]); form.append('output', out);
+  document.getElementById('rg_out').textContent = 'Generating...';
+  const r = await fetch('/api/hash/rainbow-gen', { method:'POST', body: form });
+  const j = await r.json();
+  document.getElementById('rg_out').textContent = JSON.stringify(j, null, 2);
+};
+
+document.getElementById('hb_run').onclick = async () => {
+  const hmac = document.getElementById('hb_hmac').value.trim();
+  const msg = document.getElementById('hb_msg').value;
+  const algo = document.getElementById('hb_algo').value.trim();
+  const file = document.getElementById('hb_wordlist');
+  if (!hmac || !msg || !algo || !file.files.length){ alert('Provide all fields and wordlist'); return; }
+  const form = new FormData(); form.append('hmac', hmac); form.append('msg', msg); form.append('algo', algo); form.append('wordlist', file.files[0]);
+  document.getElementById('hb_out').textContent = 'Running...';
+  const r = await fetch('/api/hash/hmac-brute', { method:'POST', body: form });
+  const j = await r.json();
+  document.getElementById('hb_out').textContent = JSON.stringify(j, null, 2);
+};
+
+document.getElementById('bd_run').onclick = async () => {
+  const algo = document.getElementById('bd_algo').value.trim();
+  const len = parseInt(document.getElementById('bd_len').value) || 8;
+  if (!algo) { alert('Provide algo'); return; }
+  document.getElementById('bd_out').textContent = 'Running...';
+  const r = await fetch('/api/hash/birthday', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({algo, length: len}) });
+  const j = await r.json();
+  document.getElementById('bd_out').textContent = JSON.stringify(j, null, 2);
+};
+</script>
+</body>
+</html>

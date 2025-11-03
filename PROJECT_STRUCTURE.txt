@@ -1,0 +1,148 @@
+╔════════════════════════════════════════════════════════════════════════╗
+║           🔐 CRYPTANALYZER WEB UI - PROJECT STRUCTURE 🔐              ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+📁 Cryptanalyzer/
+│
+├── 🚀 LAUNCH SCRIPTS
+│   ├── run_webui.sh                 ⭐ Linux/Mac launcher (NEW)
+│   ├── run_webui.bat                ⭐ Windows launcher (NEW)
+│   └── test_webui.py                ⭐ Test suite (NEW)
+│
+├── ⚙️ CORE APPLICATION
+│   ├── app.py                       ✏️ Flask server (UPDATED)
+│   ├── main.py                      ✅ CLI interface (EXISTING)
+│   ├── config.py                    ⭐ Configuration (NEW)
+│   └── reqirements.txt              ✏️ Dependencies (UPDATED)
+│
+├── 🧩 MODULES
+│   ├── modules/
+│   │   ├── __init__.py              ✅ Package init
+│   │   ├── rsa.py                   ✏️ RSA attacks (ENHANCED)
+│   │   │                               • rsa_fact() ⭐
+│   │   │                               • rsa() ⭐
+│   │   │                               • rsa_e() ⭐
+│   │   ├── aes.py                   ✅ AES attacks
+│   │   ├── hashAttacker.py          ✅ Hash attacks
+│   │   └── main.py                  ✅ Module main
+│
+├── 🎨 FRONTEND
+│   ├── templates/
+│   │   ├── index.html               ✏️ Dashboard (UPDATED)
+│   │   ├── rsa.html                 ✏️ RSA tools (UPDATED)
+│   │   ├── aes.html                 ✏️ AES tools (UPDATED)
+│   │   ├── hash.html                ✏️ Hash attacks (UPDATED)
+│   │   └── encode.html              ✏️ Encoding tools (UPDATED)
+│   │
+│   └── static/
+│       ├── css/
+│       │   └── style.css            ⭐ Custom styling (NEW)
+│       └── js/
+│           └── utils.js             ⭐ JavaScript utilities (NEW)
+│
+├── 📚 DOCUMENTATION
+│   ├── README.md                    ✏️ Main overview (REWRITTEN)
+│   ├── QUICKSTART.md                ⭐ Quick start (NEW)
+│   ├── WEB_UI_README.md             ⭐ Web UI guide (NEW)
+│   ├── WEB_UI_SETUP_COMPLETE.md     ⭐ Setup summary (NEW)
+│   ├── CHANGELOG.md                 ⭐ Version history (NEW)
+│   ├── SUMMARY.md                   ⭐ Implementation summary (NEW)
+│   └── PROJECT_STRUCTURE.txt        ⭐ This file (NEW)
+│
+└── 📊 DATA
+    ├── data/
+    │   └── sample_wordlist.txt      ⭐ Sample data (NEW)
+    └── uploads/                     ⚡ Auto-created on first run
+
+╔════════════════════════════════════════════════════════════════════════╗
+║                        📊 STATISTICS                                    ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+⭐ NEW FILES:        12
+✏️ MODIFIED FILES:   9
+✅ EXISTING FILES:   Multiple
+📄 TOTAL FILES:      23+
+
+🎨 Web Pages:        5
+🔌 API Endpoints:    12
+🧪 Test Cases:       6
+📚 Documentation:    7 files
+
+╔════════════════════════════════════════════════════════════════════════╗
+║                    🎯 QUICK START COMMANDS                             ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+📦 Install Dependencies:
+   pip install -r reqirements.txt
+
+🚀 Start Web Server (Easy):
+   ./run_webui.sh          # Linux/Mac
+   run_webui.bat           # Windows
+
+🚀 Start Web Server (Manual):
+   python app.py
+
+🌐 Open Browser:
+   http://localhost:5000
+
+🧪 Run Tests:
+   python test_webui.py
+
+💻 Use CLI:
+   python main.py --help
+
+╔════════════════════════════════════════════════════════════════════════╗
+║                     🌟 FEATURES AVAILABLE                              ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+🔐 RSA Tools:
+   • PEM key extraction
+   • Automatic factorization
+   • Private key recovery
+   • Small exponent attacks
+   • Direct decryption
+
+#️⃣ Hash Attacks:
+   • Dictionary attacks
+   • Rainbow tables (generate & lookup)
+   • HMAC brute-force
+   • Birthday attacks
+   • MD5, SHA1, SHA256, SHA512, etc.
+
+🔒 AES Analysis:
+   • Chosen plaintext attacks
+   • Oracle exploitation
+
+🔤 Encoding/Decoding:
+   • Base64, Hex, URL
+   • Encode & Decode
+
+╔════════════════════════════════════════════════════════════════════════╗
+║                  🎓 DOCUMENTATION GUIDE                                ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+📖 Getting Started:
+   1. Start with QUICKSTART.md (3-step setup)
+   2. Read WEB_UI_README.md (complete guide)
+   3. Check SUMMARY.md (what was built)
+
+📖 Reference:
+   • README.md - Project overview
+   • WEB_UI_README.md - API documentation
+   • CHANGELOG.md - Version history
+   • WEB_UI_SETUP_COMPLETE.md - Setup verification
+
+╔════════════════════════════════════════════════════════════════════════╗
+║                    ⚠️ SECURITY REMINDERS                               ║
+╚════════════════════════════════════════════════════════════════════════╝
+
+✅ For authorized security testing only
+✅ Local use only by default (0.0.0.0:5000)
+✅ Add authentication before deploying
+✅ Review security settings in config.py
+✅ Use responsibly and ethically
+
+╔════════════════════════════════════════════════════════════════════════╗
+║                   🎉 STATUS: READY TO USE! 🎉                         ║
+╚════════════════════════════════════════════════════════════════════════╝
+
