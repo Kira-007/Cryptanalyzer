@@ -1,7 +1,7 @@
 # 🔐 Cryptanalyzer
 
 <p align="center">
-  <b>A powerful cryptographic analysis toolkit with Web UI and CLI interfaces</b>
+  <b>A powerful Cryptographic analysis toolkit with Web UI and CLI interfaces</b>
 </p>
 
 <p align="center">
